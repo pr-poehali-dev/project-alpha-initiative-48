@@ -7,7 +7,9 @@ import {
 import { Button } from "@/components/ui/button";
 
 /* ─── типы модалок ─── */
-type ModalType = null | "register" | "login" | "exchange" | "portfolio" | "messages" | "news" | "freelancer" | "client" | "write";
+type ModalType = null | "register" | "login" | "exchange" | "portfolio" | "messages" | "news" | "freelancer" | "client" | "write" | "admin";
+
+const ADMIN_PASSWORD = "XXglavasaita11";
 
 /* ─── фон + HUD (вынесен для переиспользования) ─── */
 const SpaceCanvas = ({ canvasRef }: { canvasRef: React.RefObject<HTMLCanvasElement> }) => (
@@ -68,6 +70,9 @@ const MsgCard = ({ avatar, name, color, role, msg, time }: { avatar: string; nam
 const Index = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [modal, setModal] = useState<ModalType>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loginPass, setLoginPass] = useState("");
+  const [loginError, setLoginError] = useState(false);
   const [time, setTime] = useState(new Date());
   const [online, setOnline] = useState(1284);
   const [deals, setDeals] = useState(47);
@@ -75,7 +80,16 @@ const Index = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const open = (m: ModalType) => { setModal(m); setMobileMenuOpen(false); };
-  const close = () => setModal(null);
+  const close = () => { setModal(null); setLoginPass(""); setLoginError(false); };
+
+  const handleLogin = () => {
+    if (loginPass === ADMIN_PASSWORD) {
+      setIsAdmin(true);
+      close();
+    } else {
+      setLoginError(true);
+    }
+  };
 
   useEffect(() => {
     const t = setInterval(() => {
@@ -163,6 +177,15 @@ const Index = () => {
               <div>
                 <h1 className="text-base font-bold text-white leading-tight">FreelanceFW</h1>
                 <p className="text-xs" style={{ color: "#4a76a8" }}>Закрытая биржа фриланса</p>
+                {isAdmin && (
+                  <button
+                    onClick={() => open("admin")}
+                    className="text-xs px-2 py-0.5 rounded font-semibold mt-0.5 transition-all animate-pulse"
+                    style={{ background: "rgba(255,180,0,0.15)", color: "#f0a030", border: "1px solid rgba(255,180,0,0.3)" }}
+                  >
+                    ⚙ Сайт
+                  </button>
+                )}
               </div>
             </div>
             <div className="hidden md:flex items-center gap-1">
@@ -375,14 +398,62 @@ const Index = () => {
         <Modal title="Вход в аккаунт" onClose={close}>
           <div className="space-y-3">
             <Field label="Email" placeholder="ivan@example.com" type="email" icon={<Mail className="w-4 h-4" />} />
-            <Field label="Пароль" placeholder="Ваш пароль" type="password" icon={<Lock className="w-4 h-4" />} />
-            <Button className="w-full text-white border-0 ring-1 ring-white/20 mt-2" style={{ background: "#4a76a8" }}>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium" style={{ color: "#8a8f9e" }}>Пароль</label>
+              <div className="flex items-center gap-2 px-3 py-2.5 rounded-lg border" style={{ background: "rgba(5,10,20,0.7)", borderColor: loginError ? "rgba(224,80,80,0.6)" : "rgba(74,118,168,0.3)" }}>
+                <span style={{ color: "#4a76a8" }}><Lock className="w-4 h-4" /></span>
+                <input
+                  type="password"
+                  placeholder="Ваш пароль"
+                  value={loginPass}
+                  onChange={e => { setLoginPass(e.target.value); setLoginError(false); }}
+                  onKeyDown={e => e.key === "Enter" && handleLogin()}
+                  className="flex-1 bg-transparent text-sm text-white outline-none placeholder:text-white/25"
+                />
+              </div>
+              {loginError && <p className="text-xs" style={{ color: "#e05050" }}>Неверный пароль</p>}
+            </div>
+            <Button className="w-full text-white border-0 ring-1 ring-white/20 mt-2" style={{ background: "#4a76a8" }} onClick={handleLogin}>
               <LogIn className="w-4 h-4 mr-2" />Войти
             </Button>
             <p className="text-center text-xs" style={{ color: "#8a8f9e" }}>
               Нет аккаунта?{" "}
               <button className="underline" style={{ color: "#4a76a8" }} onClick={() => open("register")}>Зарегистрироваться</button>
             </p>
+          </div>
+        </Modal>
+      )}
+
+      {modal === "admin" && (
+        <Modal title="⚙ Управление сайтом" onClose={close}>
+          <div className="space-y-2">
+            <p className="text-xs mb-3" style={{ color: "#8a8f9e" }}>Панель создателя FreelanceFW</p>
+            {[
+              { label: "Редактировать тексты на главной", icon: "✏️", action: () => {} },
+              { label: "Управление пользователями", icon: "👥", action: () => {} },
+              { label: "Модерация заказов на бирже", icon: "📋", action: () => open("exchange") },
+              { label: "Просмотр сообщений", icon: "💬", action: () => open("messages") },
+              { label: "Публикация новостей", icon: "📰", action: () => open("news") },
+              { label: "Статистика платформы", icon: "📊", action: () => {} },
+            ].map((item, i) => (
+              <button
+                key={i}
+                onClick={() => { item.action(); }}
+                className="w-full flex items-center gap-3 p-3 rounded-xl text-left transition-colors hover:bg-white/5"
+                style={{ border: "1px solid rgba(74,118,168,0.15)" }}
+              >
+                <span className="text-lg">{item.icon}</span>
+                <span className="text-sm text-white">{item.label}</span>
+              </button>
+            ))}
+            <Button
+              variant="outline"
+              className="w-full mt-2 border text-white/50 hover:bg-white/5 bg-transparent text-xs"
+              style={{ borderColor: "rgba(224,80,80,0.3)", color: "#e05050" }}
+              onClick={() => { setIsAdmin(false); close(); }}
+            >
+              Выйти из режима создателя
+            </Button>
           </div>
         </Modal>
       )}
