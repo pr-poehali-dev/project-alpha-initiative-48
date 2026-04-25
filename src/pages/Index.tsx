@@ -75,7 +75,7 @@ const Index = () => {
             <Briefcase className="w-6 h-6 text-white" />
           </div>
           <div className="w-8 h-[2px] rounded-full" style={{ background: "rgba(255,255,255,0.1)" }}></div>
-          {["🔥", "💼", "⭐", "🔒"].map((emoji, i) => (
+          {["A", "B", "C", "D"].map((emoji, i) => (
             <div
               key={i}
               className="w-12 h-12 rounded-3xl hover:rounded-xl transition-all duration-200 flex items-center justify-center cursor-pointer text-lg"
