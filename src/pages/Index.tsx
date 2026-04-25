@@ -38,10 +38,10 @@ const Index = () => {
             </div>
           </div>
           <div className="hidden sm:flex items-center gap-4">
-            <Button variant="ghost" className="text-white/70 hover:text-white hover:bg-white/10">
+            <Button variant="ghost" className="text-white/70 hover:text-white hover:bg-white/10 border border-white/20 hover:border-white/40">
               Войти
             </Button>
-            <Button className="text-white px-6 py-2 rounded text-sm font-medium border-0" style={{ background: "linear-gradient(135deg, #3b82f6, #10b981)" }}>
+            <Button className="text-white px-6 py-2 rounded text-sm font-medium border-0 ring-1 ring-white/30" style={{ background: "linear-gradient(135deg, #3b82f6, #10b981)" }}>
               Начать работу
             </Button>
           </div>
@@ -57,10 +57,10 @@ const Index = () => {
         {mobileMenuOpen && (
           <div className="sm:hidden mt-4 pt-4 border-t border-white/10">
             <div className="flex flex-col gap-3">
-              <Button variant="ghost" className="text-white/70 hover:text-white hover:bg-white/10 justify-start">
+              <Button variant="ghost" className="text-white/70 hover:text-white hover:bg-white/10 justify-start border border-white/20">
                 Войти
               </Button>
-              <Button className="text-white px-6 py-2 rounded text-sm font-medium" style={{ background: "linear-gradient(135deg, #3b82f6, #10b981)" }}>
+              <Button className="text-white px-6 py-2 rounded text-sm font-medium ring-1 ring-white/30 border-0" style={{ background: "linear-gradient(135deg, #3b82f6, #10b981)" }}>
                 Начать работу
               </Button>
             </div>
@@ -95,7 +95,7 @@ const Index = () => {
               <h2 className="text-white font-semibold text-base">FreelanceHub</h2>
               <Button
                 variant="ghost"
-                className="lg:hidden text-white/50 hover:text-white hover:bg-white/10 p-1"
+                className="lg:hidden text-white/50 hover:text-white hover:bg-white/10 p-1 border border-white/10 hover:border-white/30"
                 onClick={() => setMobileSidebarOpen(false)}
               >
                 <X className="w-4 h-4" />
@@ -145,7 +145,7 @@ const Index = () => {
                 <div className="text-white text-sm font-medium truncate">Алексей</div>
                 <div className="text-xs truncate" style={{ color: "#10b981" }}>● В сети</div>
               </div>
-              <Button variant="ghost" size="sm" className="w-8 h-8 p-0 hover:bg-white/10">
+              <Button variant="ghost" size="sm" className="w-8 h-8 p-0 hover:bg-white/10 border border-white/10 hover:border-white/30">
                 <Settings className="w-4 h-4 text-white/50" />
               </Button>
             </div>
@@ -157,7 +157,7 @@ const Index = () => {
             <div className="h-12 border-b border-white/10 flex items-center px-4 gap-2" style={{ background: "rgba(10, 20, 40, 0.6)" }}>
               <Button
                 variant="ghost"
-                className="lg:hidden text-white/50 hover:text-white hover:bg-white/10 p-1 mr-2"
+                className="lg:hidden text-white/50 hover:text-white hover:bg-white/10 p-1 mr-2 border border-white/10 hover:border-white/30"
                 onClick={() => setMobileSidebarOpen(true)}
               >
                 <Menu className="w-5 h-5" />
@@ -242,7 +242,7 @@ const Index = () => {
                         <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#10b981" }}></div>
                         <span className="text-xs font-medium" style={{ color: "#10b981" }}>Доступна для новых проектов</span>
                       </div>
-                      <Button className="w-full text-white text-xs sm:text-sm py-1.5 rounded border-0" style={{ background: "linear-gradient(135deg, #3b82f6, #10b981)" }}>
+                      <Button className="w-full text-white text-xs sm:text-sm py-1.5 rounded border-0 ring-1 ring-white/30" style={{ background: "linear-gradient(135deg, #3b82f6, #10b981)" }}>
                         Написать
                       </Button>
                     </div>
@@ -290,13 +290,13 @@ const Index = () => {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                  <Button className="text-white px-6 sm:px-8 py-2 sm:py-3 rounded text-sm font-medium border-0" style={{ background: "linear-gradient(135deg, #3b82f6, #10b981)" }}>
+                  <Button className="text-white px-6 sm:px-8 py-2 sm:py-3 rounded text-sm font-medium border-0 ring-1 ring-white/30" style={{ background: "linear-gradient(135deg, #3b82f6, #10b981)" }}>
                     <Briefcase className="w-4 h-4 mr-2" />
                     Я фрилансер
                   </Button>
                   <Button
                     variant="outline"
-                    className="border-white/20 text-white/70 hover:bg-white/10 hover:border-white/40 px-6 sm:px-8 py-2 sm:py-3 rounded text-sm font-medium bg-transparent"
+                    className="border border-white/25 text-white/70 hover:bg-white/10 hover:border-white/50 px-6 sm:px-8 py-2 sm:py-3 rounded text-sm font-medium bg-transparent"
                   >
                     <Search className="w-4 h-4 mr-2" />
                     Я ищу специалиста
