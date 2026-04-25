@@ -7,7 +7,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 /* ─── типы модалок ─── */
-type ModalType = null | "register" | "login" | "exchange" | "portfolio" | "messages" | "news" | "freelancer" | "client" | "write" | "admin";
+type ModalType = null | "register" | "login" | "exchange" | "portfolio" | "messages" | "news" | "freelancer" | "client" | "write" | "admin" | "address";
 
 const ADMIN_PASSWORD = "XXglavasaita11";
 
@@ -189,13 +189,22 @@ const Index = () => {
                 <h1 className="text-base font-bold text-white leading-tight">{texts.siteName}</h1>
                 <p className="text-xs" style={{ color: "#4a76a8" }}>{texts.siteTagline}</p>
                 {isAdmin && (
-                  <button
-                    onClick={() => open("admin")}
-                    className="text-xs px-2 py-0.5 rounded font-semibold mt-0.5 transition-all animate-pulse"
-                    style={{ background: "rgba(255,180,0,0.15)", color: "#f0a030", border: "1px solid rgba(255,180,0,0.3)" }}
-                  >
-                    ⚙ Сайт
-                  </button>
+                  <div className="flex items-center gap-1 mt-0.5">
+                    <button
+                      onClick={() => open("admin")}
+                      className="text-xs px-2 py-0.5 rounded font-semibold transition-all animate-pulse"
+                      style={{ background: "rgba(255,180,0,0.15)", color: "#f0a030", border: "1px solid rgba(255,180,0,0.3)" }}
+                    >
+                      ⚙ Сайт
+                    </button>
+                    <button
+                      onClick={() => open("address")}
+                      className="text-xs px-2 py-0.5 rounded font-semibold transition-all"
+                      style={{ background: "rgba(94,204,139,0.12)", color: "#5ecc8b", border: "1px solid rgba(94,204,139,0.3)" }}
+                    >
+                      🌐 Адрес
+                    </button>
+                  </div>
                 )}
               </div>
             </div>
@@ -496,6 +505,47 @@ const Index = () => {
               style={{ borderColor: "rgba(224,80,80,0.3)", color: "#e05050" }}
               onClick={() => { setIsAdmin(false); close(); }}>
               Выйти из режима создателя
+            </Button>
+          </div>
+        </Modal>
+      )}
+
+      {modal === "address" && (
+        <Modal title="🌐 Адрес сайта" onClose={close}>
+          <div className="space-y-4">
+            <p className="text-xs" style={{ color: "#8a8f9e" }}>Укажи новый адрес — сайт перенаправит на него посетителей</p>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium" style={{ color: "#8a8f9e" }}>Текущий адрес</label>
+              <div className="px-3 py-2.5 rounded-lg border flex items-center gap-2" style={{ background: "rgba(5,10,20,0.5)", borderColor: "rgba(74,118,168,0.2)" }}>
+                <span className="text-xs font-mono" style={{ color: "#5ecc8b" }}>{window.location.origin}</span>
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium" style={{ color: "#8a8f9e" }}>Новый адрес (домен)</label>
+              <div className="flex items-center gap-2 px-3 py-2.5 rounded-lg border" style={{ background: "rgba(5,10,20,0.7)", borderColor: "rgba(94,204,139,0.3)" }}>
+                <span style={{ color: "#5ecc8b" }}>🌐</span>
+                <input
+                  id="new-address-input"
+                  type="url"
+                  placeholder="https://freelanceFW.ru"
+                  className="flex-1 bg-transparent text-sm text-white outline-none placeholder:text-white/25 font-mono"
+                />
+              </div>
+            </div>
+            <div className="rounded-xl p-3 text-xs space-y-1" style={{ background: "rgba(94,204,139,0.07)", border: "1px solid rgba(94,204,139,0.2)", color: "#8a8f9e" }}>
+              <p>• Для смены домена перейди в <span style={{ color: "#5ecc8b" }}>Опубликовать → Привязать свой домен</span></p>
+              <p>• После привязки SSL и хостинг настраиваются автоматически</p>
+              <p>• Кнопка ниже откроет настройки публикации</p>
+            </div>
+            <Button
+              className="w-full text-white border-0 ring-1 ring-white/20 text-sm"
+              style={{ background: "#5ecc8b", color: "#0a1e0a" }}
+              onClick={() => {
+                const val = (document.getElementById("new-address-input") as HTMLInputElement)?.value;
+                if (val) window.open(val, "_blank");
+              }}
+            >
+              🌐 Перейти по новому адресу
             </Button>
           </div>
         </Modal>
