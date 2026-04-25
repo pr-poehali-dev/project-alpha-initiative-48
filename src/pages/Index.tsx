@@ -79,6 +79,17 @@ const Index = () => {
   const [ping, setPing] = useState(12);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  /* ─── редактируемые тексты ─── */
+  const [texts, setTexts] = useState({
+    heroTitle: "Фриланс без шума",
+    heroAccent: "и спама",
+    heroSub: "Биржа для серьёзных специалистов и надёжных заказчиков. Быстро, приватно, с защитой платежей.",
+    heroBadge: "Закрытая платформа · только верифицированные участники",
+    siteName: "FreelanceFW",
+    siteTagline: "Закрытая биржа фриланса",
+  });
+  const [editDraft, setEditDraft] = useState({ ...texts });
+
   const open = (m: ModalType) => { setModal(m); setMobileMenuOpen(false); };
   const close = () => { setModal(null); setLoginPass(""); setLoginError(false); };
 
@@ -175,8 +186,8 @@ const Index = () => {
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-white text-sm" style={{ background: "#4a76a8" }}>FW</div>
               <div>
-                <h1 className="text-base font-bold text-white leading-tight">FreelanceFW</h1>
-                <p className="text-xs" style={{ color: "#4a76a8" }}>Закрытая биржа фриланса</p>
+                <h1 className="text-base font-bold text-white leading-tight">{texts.siteName}</h1>
+                <p className="text-xs" style={{ color: "#4a76a8" }}>{texts.siteTagline}</p>
                 {isAdmin && (
                   <button
                     onClick={() => open("admin")}
@@ -234,14 +245,14 @@ const Index = () => {
           <div className="text-center space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-2" style={{ background: "rgba(74,118,168,0.15)", border: "1px solid rgba(74,118,168,0.35)", color: "#4a76a8" }}>
               <div className="w-1.5 h-1.5 rounded-full animate-pulse bg-current" />
-              Закрытая платформа · только верифицированные участники
+              {texts.heroBadge}
             </div>
             <h2 className="text-3xl sm:text-5xl font-bold text-white leading-tight">
-              Фриланс без шума<br />
-              <span style={{ color: "#4a76a8" }}>и спама</span>
+              {texts.heroTitle}<br />
+              <span style={{ color: "#4a76a8" }}>{texts.heroAccent}</span>
             </h2>
             <p className="text-base sm:text-lg max-w-xl mx-auto" style={{ color: "#8a8f9e" }}>
-              Биржа для серьёзных специалистов и надёжных заказчиков. Быстро, приватно, с защитой платежей.
+              {texts.heroSub}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
               <Button className="text-white px-8 py-3 text-sm font-semibold border-0 ring-1 ring-white/20" style={{ background: "#4a76a8" }} onClick={() => open("freelancer")}>
@@ -426,32 +437,64 @@ const Index = () => {
 
       {modal === "admin" && (
         <Modal title="⚙ Управление сайтом" onClose={close}>
-          <div className="space-y-2">
-            <p className="text-xs mb-3" style={{ color: "#8a8f9e" }}>Панель создателя FreelanceFW</p>
-            {[
-              { label: "Редактировать тексты на главной", icon: "✏️", action: () => {} },
-              { label: "Управление пользователями", icon: "👥", action: () => {} },
-              { label: "Модерация заказов на бирже", icon: "📋", action: () => open("exchange") },
-              { label: "Просмотр сообщений", icon: "💬", action: () => open("messages") },
-              { label: "Публикация новостей", icon: "📰", action: () => open("news") },
-              { label: "Статистика платформы", icon: "📊", action: () => {} },
-            ].map((item, i) => (
-              <button
-                key={i}
-                onClick={() => { item.action(); }}
-                className="w-full flex items-center gap-3 p-3 rounded-xl text-left transition-colors hover:bg-white/5"
-                style={{ border: "1px solid rgba(74,118,168,0.15)" }}
-              >
-                <span className="text-lg">{item.icon}</span>
-                <span className="text-sm text-white">{item.label}</span>
-              </button>
-            ))}
-            <Button
-              variant="outline"
-              className="w-full mt-2 border text-white/50 hover:bg-white/5 bg-transparent text-xs"
+          <div className="space-y-3 max-h-[70vh] overflow-y-auto pr-1">
+            <p className="text-xs" style={{ color: "#8a8f9e" }}>Панель создателя · редактируй тексты и сохраняй</p>
+
+            {/* Быстрые действия */}
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                { label: "Биржа", icon: "📋", action: () => open("exchange") },
+                { label: "Сообщения", icon: "💬", action: () => open("messages") },
+                { label: "Новости", icon: "📰", action: () => open("news") },
+                { label: "Портфолио", icon: "🖼", action: () => open("portfolio") },
+              ].map((item, i) => (
+                <button key={i} onClick={() => { item.action(); }}
+                  className="flex items-center gap-2 p-2.5 rounded-xl text-left transition-colors hover:bg-white/5 text-sm text-white"
+                  style={{ border: "1px solid rgba(74,118,168,0.2)" }}>
+                  <span>{item.icon}</span>{item.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Редактор текстов */}
+            <div className="rounded-xl p-4 space-y-3" style={{ background: "rgba(5,10,20,0.5)", border: "1px solid rgba(74,118,168,0.2)" }}>
+              <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#f0a030" }}>✏️ Тексты главной страницы</p>
+
+              {([
+                { key: "siteName", label: "Название сайта" },
+                { key: "siteTagline", label: "Подзаголовок под названием" },
+                { key: "heroBadge", label: "Бейдж (строка над заголовком)" },
+                { key: "heroTitle", label: "Главный заголовок" },
+                { key: "heroAccent", label: "Акцентная строка (синяя)" },
+                { key: "heroSub", label: "Описание под заголовком" },
+              ] as { key: keyof typeof texts; label: string }[]).map(({ key, label }) => (
+                <div key={key} className="space-y-1">
+                  <label className="text-xs" style={{ color: "#8a8f9e" }}>{label}</label>
+                  <input
+                    value={editDraft[key]}
+                    onChange={e => setEditDraft(d => ({ ...d, [key]: e.target.value }))}
+                    className="w-full bg-transparent text-sm text-white outline-none px-3 py-2 rounded-lg border placeholder:text-white/20"
+                    style={{ borderColor: "rgba(74,118,168,0.3)", background: "rgba(5,10,20,0.6)" }}
+                  />
+                </div>
+              ))}
+
+              <div className="flex gap-2 pt-1">
+                <Button className="flex-1 text-white border-0 ring-1 ring-white/20 text-sm" style={{ background: "#4a76a8" }}
+                  onClick={() => { setTexts({ ...editDraft }); }}>
+                  💾 Сохранить
+                </Button>
+                <Button variant="outline" className="text-white/50 border bg-transparent text-sm hover:bg-white/5"
+                  style={{ borderColor: "rgba(74,118,168,0.3)" }}
+                  onClick={() => setEditDraft({ ...texts })}>
+                  Сбросить
+                </Button>
+              </div>
+            </div>
+
+            <Button variant="outline" className="w-full border bg-transparent text-xs hover:bg-white/5"
               style={{ borderColor: "rgba(224,80,80,0.3)", color: "#e05050" }}
-              onClick={() => { setIsAdmin(false); close(); }}
-            >
+              onClick={() => { setIsAdmin(false); close(); }}>
               Выйти из режима создателя
             </Button>
           </div>
