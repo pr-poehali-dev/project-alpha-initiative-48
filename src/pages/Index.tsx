@@ -240,7 +240,7 @@ const Index = () => {
               <div className="text-xs font-semibold uppercase tracking-wide mb-4" style={{ color: "#4a76a8" }}>Пример карточки специалиста</div>
               <div className="flex flex-col sm:flex-row gap-5 items-start">
                 <div className="rounded-xl overflow-hidden w-full sm:w-64 border shrink-0" style={{ background: "rgba(10,20,40,0.6)", borderColor: "rgba(74,118,168,0.2)" }}>
-                  <div className="h-14 relative" style={{ background: "linear-gradient(135deg, #4a76a8, #7c3aed)" }}>
+                  <div className="h-14 relative my-0 py-0 px-0 mx-20" style={{ background: "linear-gradient(135deg, #4a76a8, #7c3aed)" }}>
                     <div className="absolute bottom-0 translate-y-1/2 left-4">
                       <div className="w-14 h-14 rounded-full border-4 bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-lg font-bold" style={{ borderColor: "rgba(15,25,45,0.9)" }}>М</div>
                     </div>
